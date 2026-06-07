@@ -23,5 +23,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Bouncy Scroll"
-include(":app")
+include(":sample")
 include(":bouncyscroll")
