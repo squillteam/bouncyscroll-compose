@@ -2,12 +2,15 @@ package team.squill.bouncyscroll
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -20,6 +23,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Velocity
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BouncyColumn(
     modifier: Modifier = Modifier,
@@ -76,15 +80,17 @@ fun BouncyColumn(
         }
     }
 
-    Column(
-        modifier = modifier
-            .nestedScroll(nestedScrollConnection)
-            .verticalScroll(rememberScrollState())
-            .graphicsLayer {
-                translationY = offsetY.value
-            },
-        verticalArrangement = verticalArrangement,
-        horizontalAlignment = horizontalAlignment,
-        content = content
-    )
+    CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
+        Column(
+            modifier = modifier
+                .nestedScroll(nestedScrollConnection)
+                .verticalScroll(rememberScrollState())
+                .graphicsLayer {
+                    translationY = offsetY.value
+                },
+            verticalArrangement = verticalArrangement,
+            horizontalAlignment = horizontalAlignment,
+            content = content
+        )
+    }
 }
