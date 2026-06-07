@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun SampleScreen(modifier: Modifier = Modifier) {
     var selectedTab by remember { mutableIntStateOf(0) }
-    val tabs = listOf("BouncyColumn", "BouncyLazyColumn")
+    val tabs = listOf("Column", "LazyColumn", "Grid", "LazyGrid")
 
     Column(modifier = modifier) {
         TabRow(selectedTabIndex = selectedTab) {
@@ -31,6 +31,8 @@ fun SampleScreen(modifier: Modifier = Modifier) {
         when (selectedTab) {
             0 -> BouncyColumnSample(modifier = Modifier.fillMaxSize())
             1 -> BouncyLazyColumnSample(modifier = Modifier.fillMaxSize())
+            2 -> BouncyGridSample(modifier = Modifier.fillMaxSize())
+            3 -> BouncyLazyGridSample(modifier = Modifier.fillMaxSize())
         }
     }
 }
