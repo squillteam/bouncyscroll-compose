@@ -16,6 +16,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
@@ -49,6 +50,7 @@ fun BouncyLazyColumn(
     CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
         LazyColumn(
             modifier = modifier
+                .clipToBounds()
                 .nestedScroll(nestedScrollConnection)
                 .graphicsLayer { translationY = offsetY.value },
             state = state,
