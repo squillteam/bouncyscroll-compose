@@ -8,13 +8,32 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+
+      - name: Read version from gradle.properties
+        id: version
+        run: |
+          VERSION=$(grep "^bouncyscroll.version=" gradle.properties | cut -d'=' -f2)
+          echo "value=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create and push release tag
+        run: |
+          TAG="v${{ steps.version.outputs.value }}"
+          if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
+            echo "Tag $TAG already exists, skipping."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "$TAG"
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} "$TAG"
+            echo "Tag $TAG created."
+          fi
 
       - uses: actions/setup-java@v4
         with:
