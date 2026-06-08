@@ -1,0 +1,31 @@
+name: Check version bump
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch main branch
+        run: git fetch origin main --depth=1
+
+      - name: Verify bouncyscroll.version is bumped
+        run: |
+          CURRENT=$(grep "^bouncyscroll.version=" gradle.properties | cut -d'=' -f2)
+          BASE=$(git show origin/main:gradle.properties | grep "^bouncyscroll.version=" | cut -d'=' -f2)
+
+          echo "main   : $BASE"
+          echo "branch : $CURRENT"
+
+          if [ "$CURRENT" = "$BASE" ]; then
+            echo ""
+            echo "ERROR: bouncyscroll.version was not bumped."
+            echo "Update bouncyscroll.version in gradle.properties before merging to main."
+            exit 1
+          fi
+
+          echo "OK: version bumped $BASE -> $CURRENT"
