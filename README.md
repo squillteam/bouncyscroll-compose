@@ -2,6 +2,48 @@
 
 A Jetpack Compose library that adds a spring-based overscroll (bounce) effect to scrollable containers. When the user reaches the edge of the list, the content stretches and snaps back with a natural spring animation.
 
+## Installation
+
+### Step 1 — Add GitHub Packages repository
+
+In your project's `settings.gradle.kts`, add the GitHub Packages Maven repository:
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/squillteam/bouncyscroll-compose")
+            credentials {
+                username = providers.gradleProperty("gpr.user").orNull
+                    ?: System.getenv("GITHUB_ACTOR")
+                password = providers.gradleProperty("gpr.token").orNull
+                    ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+```
+
+GitHub Packages requires authentication even for public packages. Generate a [Personal Access Token](https://github.com/settings/tokens) with the `read:packages` scope and add it to your local `~/.gradle/gradle.properties`:
+
+```properties
+gpr.user=YOUR_GITHUB_USERNAME
+gpr.token=YOUR_PERSONAL_ACCESS_TOKEN
+```
+
+### Step 2 — Add the dependency
+
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("team.squill:bouncyscroll:0.1.0-alpha01")
+}
+```
+
+---
+
 ## Usage
 
 Replace a regular `Column` with `BouncyColumn`:
