@@ -57,18 +57,6 @@ afterEvaluate {
     }
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "team.squill"
-            artifactId = "bouncyscroll"
-            version = project.properties["bouncyscroll.version"] as String
-
-            afterEvaluate { from(components["release"]) }
-        }
-    }
-}
-
 dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
